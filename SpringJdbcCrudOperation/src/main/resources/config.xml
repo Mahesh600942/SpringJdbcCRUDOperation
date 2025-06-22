@@ -11,8 +11,20 @@
         http://www.springframework.org/schema/util
         https://www.springframework.org/schema/util/spring-util.xsd">
     
+    <context:annotation-config />
+    <context:component-scan base-package="com.mycompany.springjdbccrudoperation" />
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="dataSource"  >
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/spring_jdbc" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+    </bean>
+    
+   <bean class="org.springframework.jdbc.core.JdbcTemplate" name="jdbcTemplate" p:dataSource-ref="dataSource" /> 
    
+   <bean class="com.mycompany.springjdbccrudoperation.StudentDAOImpl" name="impl"  autowire="byName"/>
    
+
      
 </beans>
 
