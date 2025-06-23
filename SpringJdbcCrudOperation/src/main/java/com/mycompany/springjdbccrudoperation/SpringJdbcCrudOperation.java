@@ -14,20 +14,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class SpringJdbcCrudOperation {
 
     public static void main(String[] args) {
-        
-        ApplicationContext c=new AnnotationConfigApplicationContext(JavaConfig.class);
-        
+
+        ApplicationContext c = new AnnotationConfigApplicationContext(JavaConfig.class);
+
         StudentDAOImpl j = c.getBean(StudentDAOImpl.class);
-        
+
         System.out.println(j.getStudents());
 //        ApplicationContext c = new ClassPathXmlApplicationContext("config.xml");
 //        StudentDAOImpl j = c.getBean("impl", StudentDAOImpl.class);
-        int i=0;
+        int i = 0;
         do {
             System.out.println("1.Insert\n2.Update\n3.Delete\n4.Get Singal\n5.Get All\n6.Exit");
             System.out.println("enter your choice");
             Scanner sc = new Scanner(System.in);
-             i = sc.nextInt();
+            i = sc.nextInt();
 
             switch (i) {
                 case 1:
@@ -36,43 +36,61 @@ public class SpringJdbcCrudOperation {
                     String name = sc.next();
                     String city = sc.next();
                     j.insert(new Student(id, name, city));
+                    System.err.println("new record is inserted");
                     break;
 
                 case 2:
                     System.err.println("enter student id");
                     int idu = sc.nextInt();
-                    System.err.println("enter student name and city");
-                    String nameu = sc.next();
-                    String cityu = sc.next();
-                    j.update(idu, new Student(nameu, cityu));
+                    if (j.getStudent(idu) != null) {
+                        System.err.println("enter student name and city");
+                        String nameu = sc.next();
+                        String cityu = sc.next();
+
+                        j.update(idu, new Student(nameu, cityu));
+                        System.err.println("record is updated");
+                    } else {
+                        System.err.println("no record avilable");
+                    }
+
                     break;
 
                 case 3:
                     System.err.println("enter student id");
                     int idd = sc.nextInt();
+                    if (j.getStudent(idd) != null) {
+                        j.delete(idd);
+                        System.err.println("record is deleted");
+                    } else {
+                        System.err.println("no record avilable");
+                    }
 
-                    j.delete(idd);
                     break;
                 case 4:
                     System.err.println(" enter student id");
                     int ids = sc.nextInt();
-                    System.out.println(j.getStudent(ids));
+                    if (j.getStudent(ids) != null) {
+                        System.out.println(j.getStudent(ids));
+
+                    } else {
+                        System.err.println("no record avilable");
+                    }
 
                     break;
-                    
-                     case 5:
-                    
+
+                case 5:
+
                     System.out.println(j.getStudents());
 
                     break;
-                    
+
                 default:
                     System.err.println(" enter correct choice");
                     break;
 
             }
 
-        } while (i!=6);
+        } while (i != 6);
 
     }
 }
